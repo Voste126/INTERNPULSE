@@ -123,3 +123,31 @@ jobs:
      - How to run the service locally
      - How to understand the tests
      - How to deploy using the CI/CD pipeline
+
+## Payment Gateway API
+
+This project implements a basic RESTful API for a payment gateway that allows small businesses to accept payments. It is built with Django REST Framework and uses Swagger for API documentation.
+
+## Features
+
+- **Endpoints**:
+  - **POST /api/v1/payments**: Initiate a payment.
+  - **GET /api/v1/payments/{id}**: Retrieve the status of a payment.
+- **API Versioning**: All endpoints are versioned (v1).
+- **Swagger Documentation**: Accessible at `/swagger/` or `/redoc/`.
+- **No User Authentication**: The API functions without requiring user authentication.
+- **CI/CD Ready**: Includes a sample GitHub Actions workflow for testing and deployment.
+
+## Setup & Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+    git clone https://github.com/Voste126/INTERNPULSE
+    cd Backend_Stage_3
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+    
+    ```
