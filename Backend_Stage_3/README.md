@@ -112,56 +112,6 @@ jobs:
 
 ---
 
-## For Flask Developers
-
-### Task Details more
-
-#### Backend Setup for Django developers
-
-- Use Flask with `Flask-RESTful` for payment processing.
-- Integrate the payment gateway's API or use an existing library.
-
-#### CI/CD Pipeline for Django
-
-- **Test**: Write tests using `PyTest` for payment initiation and status checking.
-- **Build**: Ensure the Flask application can be deployed with all necessary configurations.
-- **Deploy**: Deploy to platforms like Netlify, Vercel, Render, or similar.
-
-#### Example `.github/workflows/flask.yml`
-
-```yaml
-name: Flask CI
-
-on:
-    push:
-        branches: [ main ]
-    pull_request:
-        branches: [ main ]
-
-jobs:
-    build:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                python-version: [3.8]
-
-        steps:
-        - uses: actions/checkout@v2
-        - name: Set up Python ${{ matrix.python-version }}
-            uses: actions/setup-python@v2
-            with:
-                python-version: ${{ matrix.python-version }}
-        - name: Install dependencies
-            run: |
-                python -m pip install --upgrade pip
-                pip install -r requirements.txt
-        - name: Test with pytest
-            run: |
-                pytest
-```
-
----
-
 ### Deliverables
 
 1. A functional RESTful API for processing payments with:
