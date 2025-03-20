@@ -165,7 +165,7 @@ In the root of the `Backend_Stage_3` directory, create a file named `.env` with 
 
 ```dotenv
 # Optional: Use DATABASE_URL for production or Render deployments
-# DATABASE_URL=postgresql://pulse:3ZErClCYQRsXpaA9VnUrpMajBCWCfohJ@dpg-cve2r21u0jms73bc2gcg-a.oregon-postgres.render.com/pulse01
+# DATABASE_URL=
 
 # Local PostgreSQL configuration
 DB_NAME=
@@ -212,12 +212,6 @@ if "test" in sys.argv:
     DATABASES["default"]["TEST"] = {
         "NAME": "test_" + DATABASES["default"].get("NAME", "PulseDB")
     }
-```
-
-Make sure to install the `python-dotenv` package if it’s not already installed:
-
-```bash
-pip install python-dotenv
 ```
 
 ### 4. Run Database Migrations
