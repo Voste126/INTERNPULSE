@@ -138,16 +138,110 @@ This project implements a basic RESTful API for a payment gateway that allows sm
 - **No User Authentication**: The API functions without requiring user authentication.
 - **CI/CD Ready**: Includes a sample GitHub Actions workflow for testing and deployment.
 
-## Setup & Installation
+Below is an example README.md section with setup instructions that you can include in your repository:
 
-1. **Clone the Repository**:
+---
 
-   ```bash
-    git clone https://github.com/Voste126/INTERNPULSE
-    cd Backend_Stage_3
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
-    
-    ```
+## Setup Instructions
+
+Follow these steps to set up your development environment, configure your PostgreSQL database using an `.env` file, run migrations, and execute your test cases using pytest.
+
+### 1. Clone the Repository and Create a Virtual Environment
+
+Open your terminal and run the following commands:
+
+```bash
+git clone https://github.com/Voste126/INTERNPULSE
+cd Backend_Stage_3
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 2. Create and Configure the `.env` File
+
+In the root of the `Backend_Stage_3` directory, create a file named `.env` with the following content. Adjust the values as needed for your PostgreSQL setup:
+
+```dotenv
+# Optional: Use DATABASE_URL for production or Render deployments
+# DATABASE_URL=postgresql://pulse:3ZErClCYQRsXpaA9VnUrpMajBCWCfohJ@dpg-cve2r21u0jms73bc2gcg-a.oregon-postgres.render.com/pulse01
+
+# Local PostgreSQL configuration
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
+```
+
+### 3. Update Django Settings to Load Environment Variables
+
+Ensure that your Django settings load environment variables from the `.env` file. At the top of your `settings.py`, add the following:
+
+```python
+import os
+import sys
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
+import dj_database_url
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.config(default=DATABASE_URL)
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DB_NAME", "PulseDB"),
+            "USER": os.getenv("DB_USER", "postgres"),
+            "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
+            "HOST": os.getenv("DB_HOST", "localhost"),
+            "PORT": os.getenv("DB_PORT", "5432"),
+        }
+    }
+
+# Optional: Override the test database name when running tests
+if "test" in sys.argv:
+    DATABASES["default"]["TEST"] = {
+        "NAME": "test_" + DATABASES["default"].get("NAME", "PulseDB")
+    }
+```
+
+Make sure to install the `python-dotenv` package if it’s not already installed:
+
+```bash
+pip install python-dotenv
+```
+
+### 4. Run Database Migrations
+
+Ensure your PostgreSQL server is running (locally or via Docker) and that your `.env` values match your PostgreSQL credentials. Then, apply the migrations:
+
+```bash
+python manage.py migrate
+```
+
+### 5. Run All Test Cases Using Pytest
+
+To execute all tests in your project, simply run:
+
+```bash
+pytest
+```
+
+Pytest will discover and run all test cases in your project.
+
+---
+
+By following these steps, you'll have your development environment set up with a PostgreSQL database, the database schema migrated, and your tests running with pytest. Happy coding!
+
+---
+
+Feel free to adjust the instructions based on your project's specific requirements.

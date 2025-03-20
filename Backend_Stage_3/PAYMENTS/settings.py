@@ -119,19 +119,6 @@ if 'test' in sys.argv:
     }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('DB_NAME'),      # your DB name
-#         'USER': os.getenv('DB_USER'),            # change from "steve" to a valid username
-#         'PASSWORD': os.getenv('DB_PASSWORD'),    # your DB password
-#         'HOST': os.getenv('DB_HOST'),               # or your DB host
-#         'PORT': os.getenv('DB_PORT'),               # or your DB port
-#     }
-# }
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
