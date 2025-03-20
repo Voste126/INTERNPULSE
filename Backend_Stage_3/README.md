@@ -134,7 +134,7 @@ This project implements a basic RESTful API for a payment gateway that allows sm
   - **POST /api/v1/payments**: Initiate a payment.
   - **GET /api/v1/payments/{id}**: Retrieve the status of a payment.
 - **API Versioning**: All endpoints are versioned (v1).
-- **Swagger Documentation**: Accessible at `/swagger/` or `/redoc/`.
+- **Swagger Documentation**: Accessible at  `/redoc/`.
 - **No User Authentication**: The API functions without requiring user authentication.
 - **CI/CD Ready**: Includes a sample GitHub Actions workflow for testing and deployment.
 
