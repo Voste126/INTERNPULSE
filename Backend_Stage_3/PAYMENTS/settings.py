@@ -93,25 +93,31 @@ WSGI_APPLICATION = 'PAYMENTS.wsgi.application'
 #     )
 # }
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    # Use the database settings from DATABASE_URL in production
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL)
+        "default": dj_database_url.config(default=DATABASE_URL)
     }
 else:
-    # Fallback to local PostgreSQL settings (for development)
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT'),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DB_NAME", "PulseDB"),
+            "USER": os.getenv("DB_USER", "postgres"),
+            "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
+            "HOST": os.getenv("DB_HOST", "localhost"),
+            "PORT": os.getenv("DB_PORT", "5432"),
         }
     }
+
+# Optional: ensure test database name is set properly when running tests
+import sys
+if 'test' in sys.argv:
+    DATABASES["default"]["TEST"] = {
+        "NAME": "test_" + DATABASES["default"].get("NAME", "PulseDB")
+    }
+
 
 # DATABASES = {
 #     'default': {
