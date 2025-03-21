@@ -2,7 +2,17 @@
 from rest_framework import serializers
 from .models import Payment
 
-class VendorPaysSerializer(serializers.ModelSerializer):
+class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = '__all__'
+        from rest_framework import serializers
+from .models import Payment
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = [
+            'id', 'name', 'email', 'amount', 'gateway',
+            'status', 'transaction_id'
+        ]
+        read_only_fields = ['status', 'transaction_id']

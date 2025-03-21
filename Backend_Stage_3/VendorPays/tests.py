@@ -1,40 +1,34 @@
-import pytest
-from rest_framework.test import APIClient
 from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
 from .models import Payment
 
-@pytest.mark.django_db
-def test_create_payment():
-    client = APIClient()
-    url = reverse('payment-create')
-    data = {
-        "customer_name": "John Doe",
-        "customer_email": "john@example.com",
-        "amount": "50.00"
-    }
-    response = client.post(url, data, format='json')
-    # Check that the payment is created (HTTP 201 Created)
-    assert response.status_code == 201
-    assert Payment.objects.count() == 1
-    payment = Payment.objects.first()
-    assert payment.customer_name == "John Doe"
+class PaymentAPITests(APITestCase):
+    def test_create_payment(self):
+        # Use the namespaced URL
+        url = reverse('payments:payment-list')
+        data = {
+            "name": "John Doe",
+            "email": "john@example.com",
+            "amount": "100.00",
+            "gateway": "paypal"
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['status'], 'completed')
+        self.assertTrue(response.data['transaction_id'].startswith('PAYPAL-TX-'))
 
-@pytest.mark.django_db
-def test_retrieve_payment():
-    client = APIClient()
-    # Create a payment instance
-    payment = Payment.objects.create(
-        customer_name="John Doe",
-        customer_email="john@example.com",
-        amount="50.00",
-        status="completed"
-    )
-    url = reverse('payment-detail', args=[payment.id])
-    response = client.get(url, format='json')
-    # Check that the payment details are correctly returned
-    assert response.status_code == 200
-    # The response should contain the payment details
-    data = response.data
-    assert data['id'] == payment.id
-    assert data['customer_name'] == "John Doe"
-    assert data['status'] == "completed"
+    def test_get_payment(self):
+        # Create a payment directly in the database.
+        payment = Payment.objects.create(
+            name="Jane Doe",
+            email="jane@example.com",
+            amount="50.00",
+            gateway="flutterwave",
+            status="completed",
+            transaction_id="FLUTTERWAVE-TX-1"
+        )
+        url = reverse('payments:payment-detail', kwargs={'pk': payment.id})
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['name'], "Jane Doe")

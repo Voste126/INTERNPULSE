@@ -1,9 +1,12 @@
-from django.urls import path
-from .views import PaymentCreateView, PaymentDetailView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PaymentViewSet
+
+app_name = 'payments'
+
+router = DefaultRouter()
+router.register(r'payments', PaymentViewSet, basename='payment')
 
 urlpatterns = [
-    # Endpoint to initiate a payment
-    path('payments', PaymentCreateView.as_view(), name='payment-create'),
-    # Endpoint to retrieve payment status by id
-    path('payments/<int:pk>', PaymentDetailView.as_view(), name='payment-detail'),
+    path('v1/', include(router.urls)),
 ]
