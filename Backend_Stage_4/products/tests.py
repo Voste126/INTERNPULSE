@@ -25,7 +25,8 @@ def test_create_product():
     }
     response = client.post(url, data, format='json')
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.data['name'] == "Test Product"
+    # Access product details via the 'product' key.
+    assert response.data['product']['name'] == "Test Product"
     assert Product.objects.count() == 1
 
 @pytest.mark.django_db
@@ -43,9 +44,10 @@ def test_get_product_list():
     url = reverse('product-list-create')
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
-    # With pagination enabled, response.data should be a dict with a 'results' key.
-    assert 'results' in response.data
-    assert len(response.data['results']) == 1
+    # The original paginated data is now nested under the 'product' key.
+    paginated_data = response.data['product']
+    assert 'results' in paginated_data
+    assert len(paginated_data['results']) == 1
 
 @pytest.mark.django_db
 def test_get_product_detail():
@@ -61,7 +63,8 @@ def test_get_product_detail():
     url = reverse('product-detail', args=[product.id])
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
-    assert response.data['name'] == "Product2"
+    # Access product details via the 'product' key.
+    assert response.data['product']['name'] == "Product2"
 
 @pytest.mark.django_db
 def test_update_product():
@@ -110,7 +113,7 @@ def test_delete_product():
 def test_rate_limiting():
     """
     Using the default throttle rate of 100 requests per minute from settings,
-    this test sends up to 101 POST requests. However, in this test environment,
+    this test sends up to 51 POST requests. In this test environment,
     only 50 requests are allowed before throttling kicks in.
     We therefore expect exactly 50 allowed requests and that the 51st request returns a 429.
     """
@@ -124,7 +127,7 @@ def test_rate_limiting():
         "description": "Testing rate limiting"
     }
     allowed_requests = 0
-    total_requests = 51  # We'll check for 50 allowed requests then 51st should fail.
+    total_requests = 51  # We'll check for 50 allowed requests then the 51st should fail.
     
     for i in range(total_requests):
         data['sku'] = f"THROTTLESKU_{i}"
