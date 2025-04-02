@@ -141,8 +141,8 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 ## Contact
 
-- **Project Link:** [https://github.com/yourusername/internpulse](https://github.com/yourusername/internpulse)
-- **Email:** [your.email@example.com](mailto:your.email@example.com)
+- **Project Link:** [https://github.com/Voste126/internpulse](https://github.com/Voste126/internpulse)
+- **Email:** [steveaustine1262gmail.com](mailto:steveaustine1262gmail.com)
 
 ---
 
